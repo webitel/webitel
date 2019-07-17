@@ -21,7 +21,7 @@ services:
 
   portainer:
     image: portainer/portainer
-    command: ["-H", "tcp://tasks.agent:9001", "--tlsskipverify", "--logo", "https://avatars3.githubusercontent.com/u/9943327"]
+    command: ["-H", "tcp://tasks.agent:9001", "--tlsskipverify", "--logo", "https://avatars3.githubusercontent.com/u/9943327", "-t", "https://raw.githubusercontent.com/webitel/webitel/master/templates.json"]
     ports:
       - "9000:9000"
     volumes:
