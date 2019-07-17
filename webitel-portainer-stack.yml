@@ -60,4 +60,4 @@ networks:
 
 volumes:
   portainer_data:
-#  consul_data:
+  consul_data:
