@@ -76,7 +76,7 @@ services:
   httpapi:
     hostname: 'httpapi'
     image: webitel/webitel
-    command: ["bin/webitel", "--address=:8080"]
+    command: ["api", "--address=:8080"]
     environment:
       - MICRO_REGISTRY_ADDRESS=$CONSUL
     volumes:
@@ -92,7 +92,7 @@ services:
         constraints: [node.role == manager]
   directory:
     image: webitel/webitel
-    command: ["bin/webitel", "dsa", "--db-dsn='host=postgres port=5432 dbname=webitel sslmode=disable user=opensips password=webitel'"]
+    command: ["dsa", "--db-dsn=\"host=postgres port=5432 dbname=webitel sslmode=disable user=opensips password=webitel\""]
     environment:
       - MICRO_REGISTRY_ADDRESS=$CONSUL
     volumes:
