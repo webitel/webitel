@@ -37,8 +37,8 @@ services:
   consul:
     image: consul:latest
     hostname: "{{.Node.Hostname}}"
-#    volumes:
-#      - consul_data:/consul/data
+    volumes:
+      - consul_data:/consul/data
     ports:
       - 8400:8400
       - 8500:8500
