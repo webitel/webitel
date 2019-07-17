@@ -61,7 +61,7 @@ services:
     hostname: 'fs1'
     image: webitel/freeswitch:1.8.7
     environment:
-      - CONSUL=192.168.177.199
+      - CONSUL=$CONSUL
     volumes:
       - fs_sounds:/sounds
       - fs_recordings:/recordings

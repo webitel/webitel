@@ -1,11 +1,19 @@
-{
-  "type": 2,
-  "title": "Webitel",
-  "description": "Webitel cluster",
-  "platform": "linux",
-  "logo": "https://avatars3.githubusercontent.com/u/9943327",
-  "repository": {
-    "url": "https://github.com/webitel/webitel",
-    "stackfile": "webitel-stack.yml"
+[
+  {
+    "type": 2,
+    "title": "Webitel",
+    "description": "Webitel cluster",
+    "platform": "linux",
+    "logo": "https://avatars3.githubusercontent.com/u/9943327",
+    "repository": {
+      "url": "https://github.com/webitel/webitel",
+      "stackfile": "webitel-stack.yml"
+    },
+    "env": [
+      {
+        "name": "CONSUL",
+        "label": "Consul host"
+      }
+    ]
   }
-}
+]
