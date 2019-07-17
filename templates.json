@@ -2,7 +2,7 @@
   {
     "type": 2,
     "title": "Webitel",
-    "description": "Webitel cluster",
+    "description": "Webitel docker swarm stack",
     "platform": "linux",
     "logo": "https://avatars3.githubusercontent.com/u/9943327",
     "repository": {
@@ -12,7 +12,8 @@
     "env": [
       {
         "name": "CONSUL",
-        "label": "Consul host"
+        "label": "Consul",
+        "description": "Consul IP or hostname"
       }
     ]
   }
