@@ -1,7 +1,7 @@
 #!/bin/bash
 export PARENTDEV=enp2s0
 
-#docker swarm join --token SWMTKN-1-2c8w21bqhneoajrfpw1600wvclvv75c56ywwphry001kzwg9vr-7hkucqz5v9v9el2x665awcsro 192.168.177.199:2377
+#docker swarm join --token $TOKEN 192.168.177.199:2377
 docker network create --config-only \
 	--subnet 192.168.177.0/24 \
 	--gateway 192.168.177.1 \
