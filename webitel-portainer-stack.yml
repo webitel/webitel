@@ -45,8 +45,8 @@ services:
       - 8600:8600/udp
     networks:
       - agent_network
-    command: ["consul", "agent", "-dev", "-datacenter=swarm", "-client=0.0.0.0", "-log-level=warn", "-ui"]
-    #command: [ "agent", "-server", "-bootstrap-expect=3", "-retry-max=3", "-retry-interval=10s", "-datacenter=swarm", "-join=consul", "-retry-join=consul", "-bind={{ GetInterfaceIP \"eth0\" }}", "-client=0.0.0.0", "-ui"]
+    command: ["consul", "agent", "-dev", "-datacenter=swarm", "-domain=wtel", "-client=0.0.0.0", "-log-level=warn", "-ui"]
+    #command: [ "agent", "-server", "-bootstrap-expect=3", "-retry-max=3", "-retry-interval=10s", "-datacenter=swarm", "-domain=wtel", "-join=consul", "-retry-join=consul", "-bind={{ GetInterfaceIP \"eth0\" }}", "-client=0.0.0.0", "-ui"]
     deploy:
       mode: replicated
       replicas: 1
