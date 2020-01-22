@@ -2,7 +2,7 @@ version: '3.2'
 
 services:
   rabbitmq1:
-    image: webitel/rabbitmq:3.8
+    image: webitel/rabbitmq
     hostname: rabbit
     environment:
       - RABBITMQ_DEFAULT_USER=webitel
@@ -18,7 +18,7 @@ services:
         constraints: [node.labels.rabbitmq1 == true]
 
   rabbitmq2:
-    image: webitel/rabbitmq:3.8
+    image: webitel/rabbitmq
     hostname: rabbitmq
     environment:
       - RABBITMQ_DEFAULT_USER=webitel
