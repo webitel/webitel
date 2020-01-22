@@ -37,7 +37,6 @@
       "url": "https://github.com/webitel/webitel",
       "stackfile": "webitel-consul-stack.yml"
     }
-  }
   },
   {
     "type": 2,
