@@ -43,7 +43,7 @@
     "title": "RabbitMQ",
     "description": "RabbitMQ docker swarm stack",
     "platform": "linux",
-    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/RabbitMQ_logo.svg/172px-RabbitMQ_logo.svg.png",
+    "logo": "https://cdn.freebiesupply.com/logos/large/2x/rabbitmq-logo-png-transparent.png",
     "repository": {
       "url": "https://github.com/webitel/webitel",
       "stackfile": "webitel-rabbitmq-stack.yml"
