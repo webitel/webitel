@@ -2,112 +2,117 @@
 version: '3.7'
 
 services:
-  rabbit:
-    hostname: 'rabbit'
-    image: webitel/amqp
-    environment:
-      - RABBITMQ_DEFAULT_USER=webitel
-      - RABBITMQ_DEFAULT_PASS=webitel
-      - RABBITMQ_NODENAME=webitel@rabbit
-    volumes:
-      - rabbitmq_data:/var/lib/rabbitmq
-    networks:
-      - wnet
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
-  postgres:
-    hostname: 'postgres'
-    image: webitel/postgres:11
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    networks:
-      - wnet
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
   opensips:
     hostname: 'opensips'
     image: webitel/opensips:3.0
+    command: ["/opensips/sbin/opensips", "-DD"]
     environment:
       - CONSUL=$CONSUL
     networks:
       - wnet_macvlan_swarm
       - wnet
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
-  sbc:
-    hostname: 'sbc'
-    image: webitel/freeswitch:1.8.7
-    environment:
-      - SBC=true
-    networks:
-      - wnet_macvlan_swarm
-      - wnet
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
-  fs1:
-    hostname: 'fs1'
-    image: webitel/freeswitch:1.8.7
-    environment:
-      - CONSUL=$CONSUL
+    extra_hosts:
+      - rabbit:$AMQP
+      - postgres:$PGSQL
     volumes:
-      - fs_sounds:/sounds
-      - fs_recordings:/recordings
-    networks:
-      - wnet_macvlan_swarm
-      - wnet
+      - web_config:/config
     deploy:
-      mode: replicated
-      replicas: 1
+      mode: global
       placement:
         constraints: [node.role == manager]
+  engine:
+    image: webitel/engine:latest
+    command: ["-consul", "$CONSUL:8500"]
+    extra_hosts:
+      - rabbit:$AMQP
+      - postgres:$PGSQL
+    networks:
+      - wnet
+  acr:
+    image: webitel/acr:latest
+    ports:
+      - 10030:10030
+    extra_hosts:
+      - rabbit:$AMQP
+      - postgres:$PGSQL
+    networks:
+      - wnet
+  sip-uac:
+    image: webitel/webitel:latest
+    command: ["uac", "--opensips-sip-address=dev.webitel.com", "--opensips-mi-address=http://opensips:8000/mi"]
+    environment:
+      - MICRO_REGISTRY_ADDRESS=$CONSUL
+    extra_hosts:
+      - rabbit:$AMQP
+      - postgres:$PGSQL
+    networks:
+      - wnet
   directory:
-    image: webitel/webitel
-    command: ["dsa", "--db-dsn=\"host=postgres port=5432 dbname=webitel sslmode=disable user=opensips password=webitel\""]
+    image: webitel/webitel:latest
+    command: ["dsa"]
     environment:
       - MICRO_REGISTRY_ADDRESS=$CONSUL
     volumes:
       - run_data:/usr/local/webitel/run
+    extra_hosts:
+      - rabbit:$AMQP
+      - postgres:$PGSQL
+    networks:
+      - wnet
+  app:
+    image: webitel/webitel:latest
+    command: ["app"]
+    environment:
+      - MICRO_REGISTRY_ADDRESS=$CONSUL
+    volumes:
+      - run_data:/usr/local/webitel/run
+    extra_hosts:
+      - rabbit:$AMQP
+      - postgres:$PGSQL
     networks:
       - wnet
   httpapi:
     hostname: 'httpapi'
-    image: webitel/webitel
+    image: webitel/webitel:latest
     command: ["api", "--address=:80"]
     environment:
       - MICRO_REGISTRY_ADDRESS=$CONSUL
     volumes:
       - run_data:/usr/local/webitel/run
+    extra_hosts:
+      - rabbit:$AMQP
     networks:
       - wnet
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
-  client:
-    image: webitel/client
+  httpapi-docs:
+    image: webitel/swagger-api-docs
+    networks:
+      - wnet
     ports:
-      - "80:80"
-      - "443:443"
-    networks:
-      - wnet
+      - 8080:8080
     deploy:
       mode: replicated
       replicas: 1
       placement:
         constraints: [node.role == manager]
+  frontend:
+    image: webitel/web:latest
+    environment:
+      - PUID=1000
+      - PGID=1000
+      - TZ=Europe/Kiev
+      - URL=webitel.com
+      - SUBDOMAINS=dev
+      - VALIDATION=http
+      - ONLY_SUBDOMAINS=true
+    volumes:
+      - web_config:/config
+    ports:
+      - 80:80
+      - 443:443
+    networks:
+      - wnet
+    deploy:
+      mode: global
 
 networks:
   wnet:
@@ -118,7 +123,4 @@ networks:
 
 volumes:
   run_data:
-  fs_sounds:
-  fs_recordings:
-  rabbitmq_data:
-  postgres_data:
+  web_config:

@@ -36,7 +36,7 @@ services:
 
   consul:
     image: consul:latest
-    hostname: "{{.Node.Hostname}}"
+    hostname: consul
     volumes:
       - consul_data:/consul/data
     ports:
@@ -44,9 +44,24 @@ services:
       - 8500:8500
       - 8600:8600/udp
     networks:
-      - agent_network
+      - wtel_network
     command: ["consul", "agent", "-dev", "-datacenter=swarm", "-domain=wtel", "-client=0.0.0.0", "-log-level=warn", "-ui"]
-    #command: [ "agent", "-server", "-bootstrap-expect=3", "-retry-max=3", "-retry-interval=10s", "-datacenter=swarm", "-domain=wtel", "-join=consul", "-retry-join=consul", "-bind={{ GetInterfaceIP \"eth0\" }}", "-client=0.0.0.0", "-ui"]
+    #command: [ "agent", "-server", "-bootstrap-expect=3", "-retry-max=3", "-retry-interval=10s", "-datacenter=swarm", "-join=consul", "-retry-join=consul", "-bind={{ GetInterfaceIP \"eth0\" }}", "-client=0.0.0.0", "-ui"]
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+
+  postgres:
+    hostname: postgres
+    image: webitel/postgres:12
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - wtel_network
+    ports:
+      - 5432:5432
     deploy:
       mode: replicated
       replicas: 1
@@ -54,10 +69,11 @@ services:
         constraints: [node.role == manager]
 
 networks:
-  agent_network:
+  wtel_network:
     driver: overlay
     attachable: true
 
 volumes:
   portainer_data:
+  postgres_data:
   consul_data:
