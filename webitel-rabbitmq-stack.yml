@@ -3,7 +3,7 @@ version: '3.2'
 services:
   rabbitmq1:
     image: webitel/rabbitmq
-    hostname: rabbit
+    hostname: rabbitmq1
     environment:
       - RABBITMQ_DEFAULT_USER=webitel
       - RABBITMQ_DEFAULT_PASS=webitel
@@ -16,10 +16,9 @@ services:
       mode: global
       placement:
         constraints: [node.labels.rabbitmq1 == true]
-
   rabbitmq2:
     image: webitel/rabbitmq
-    hostname: rabbitmq
+    hostname: rabbitmq2
     environment:
       - RABBITMQ_DEFAULT_USER=webitel
       - RABBITMQ_DEFAULT_PASS=webitel
@@ -32,6 +31,16 @@ services:
       mode: global
       placement:
         constraints: [node.labels.rabbitmq2 == true]
+  haproxy:
+    image: webitel/haproxy-for-rabbitmq
+#    ports:
+#      - 15672:15672
+#      - 5672:5672
+#      - 1936:1936
+    networks:
+      - wtel_vlan
+    deploy:
+      mode: global
 
 networks:
   wtel_vlan:
