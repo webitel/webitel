@@ -1,0 +1,42 @@
+version: '3.2'
+
+services:
+  rabbitmq1:
+    image: webitel/rabbitmq:3.8
+    hostname: rabbit
+    environment:
+      - RABBITMQ_DEFAULT_USER=webitel
+      - RABBITMQ_DEFAULT_PASS=webitel
+      - RABBITMQ_ERLANG_COOKIE="123-SECRET-KEY-987"
+    networks:
+      - wtel_vlan
+    volumes:
+      - data1:/var/lib/rabbitmq
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.labels.rabbitmq1 == true]
+
+  rabbitmq2:
+    image: webitel/rabbitmq:3.8
+    hostname: rabbitmq
+    environment:
+      - RABBITMQ_DEFAULT_USER=webitel
+      - RABBITMQ_DEFAULT_PASS=webitel
+      - RABBITMQ_ERLANG_COOKIE="123-SECRET-KEY-987"
+    networks:
+      - wtel_vlan
+    volumes:
+      - data2:/var/lib/rabbitmq
+    deploy:
+      mode: global
+      placement:
+        constraints: [node.labels.rabbitmq2 == true]
+
+networks:
+  wtel_vlan:
+    external: true
+
+volumes:
+  data1:
+  data2:

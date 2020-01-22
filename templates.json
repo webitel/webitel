@@ -40,6 +40,17 @@
   },
   {
     "type": 2,
+    "title": "RabbitMQ",
+    "description": "RabbitMQ docker swarm stack",
+    "platform": "linux",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/7/71/RabbitMQ_logo.svg/172px-RabbitMQ_logo.svg.png",
+    "repository": {
+      "url": "https://github.com/webitel/webitel",
+      "stackfile": "webitel-rabbitmq-stack.yml"
+    }
+  },
+  {
+    "type": 2,
     "title": "Postgres",
     "description": "PostgreSQL docker swarm stack",
     "platform": "linux",
