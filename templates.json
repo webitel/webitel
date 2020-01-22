@@ -11,19 +11,9 @@
     },
     "env": [
       {
-        "name": "CONSUL",
-        "label": "Consul",
-        "description": "Consul IP or hostname"
-      },
-      {
-        "name": "AMQP",
-        "label": "RabbitMQ",
-        "description": "rabbitmq IP or hostname"
-      },
-      {
-        "name": "PGSQL",
-        "label": "PostgreSQL",
-        "description": "PostgreSQL IP or hostname"
+        "name": "SIPHOST",
+        "label": "SIP HOST",
+        "description": "IP or Hostname for SIP Binding"
       }
     ]
   },

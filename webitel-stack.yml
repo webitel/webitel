@@ -7,13 +7,10 @@ services:
     image: webitel/opensips:3.0
     command: ["/opensips/sbin/opensips", "-DD"]
     environment:
-      - CONSUL=$CONSUL
+      - CONSUL=consul
     networks:
       - wnet_macvlan_swarm
       - wtel_vlan
-    extra_hosts:
-      - rabbit:$AMQP
-      - postgres:$PGSQL
     volumes:
       - web_config:/config
     deploy:
@@ -22,53 +19,38 @@ services:
         constraints: [node.role == manager]
   engine:
     image: webitel/engine:latest
-    command: ["-consul", "$CONSUL:8500"]
-    extra_hosts:
-      - rabbit:$AMQP
-      - postgres:$PGSQL
+    command: ["-consul", "consul:8500"]
     networks:
       - wtel_vlan
   acr:
     image: webitel/acr:latest
     ports:
       - 10030:10030
-    extra_hosts:
-      - rabbit:$AMQP
-      - postgres:$PGSQL
     networks:
       - wtel_vlan
   sip-uac:
     image: webitel/webitel:latest
-    command: ["uac", "--opensips-sip-address=dev.webitel.com", "--opensips-mi-address=http://opensips:8000/mi"]
+    command: ["uac", "--opensips-sip-address=$SIPHOST", "--opensips-mi-address=http://opensips:8000/mi"]
     environment:
-      - MICRO_REGISTRY_ADDRESS=$CONSUL
-    extra_hosts:
-      - rabbit:$AMQP
-      - postgres:$PGSQL
+      - MICRO_REGISTRY_ADDRESS=consul
     networks:
       - wtel_vlan
   directory:
     image: webitel/webitel:latest
     command: ["dsa"]
     environment:
-      - MICRO_REGISTRY_ADDRESS=$CONSUL
+      - MICRO_REGISTRY_ADDRESS=consul
     volumes:
       - run_data:/usr/local/webitel/run
-    extra_hosts:
-      - rabbit:$AMQP
-      - postgres:$PGSQL
     networks:
       - wtel_vlan
   app:
     image: webitel/webitel:latest
     command: ["app"]
     environment:
-      - MICRO_REGISTRY_ADDRESS=$CONSUL
+      - MICRO_REGISTRY_ADDRESS=consul
     volumes:
       - run_data:/usr/local/webitel/run
-    extra_hosts:
-      - rabbit:$AMQP
-      - postgres:$PGSQL
     networks:
       - wtel_vlan
   httpapi:
@@ -76,11 +58,9 @@ services:
     image: webitel/webitel:latest
     command: ["api", "--address=:80"]
     environment:
-      - MICRO_REGISTRY_ADDRESS=$CONSUL
+      - MICRO_REGISTRY_ADDRESS=consul
     volumes:
       - run_data:/usr/local/webitel/run
-    extra_hosts:
-      - rabbit:$AMQP
     networks:
       - wtel_vlan
   httpapi-docs:
