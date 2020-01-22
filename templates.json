@@ -26,5 +26,28 @@
         "description": "PostgreSQL IP or hostname"
       }
     ]
+  },
+  {
+    "type": 2,
+    "title": "Consul",
+    "description": "Consul docker swarm stack",
+    "platform": "linux",
+    "logo": "https://www.datocms-assets.com/2885/1536248190-consulverticallogofullcolor.png",
+    "repository": {
+      "url": "https://github.com/webitel/webitel",
+      "stackfile": "webitel-consul-stack.yml"
+    }
+  }
+  },
+  {
+    "type": 2,
+    "title": "Postgres",
+    "description": "PostgreSQL docker swarm stack",
+    "platform": "linux",
+    "logo": "https://upload.wikimedia.org/wikipedia/commons/thumb/2/29/Postgresql_elephant.svg/1200px-Postgresql_elephant.svg.png",
+    "repository": {
+      "url": "https://github.com/webitel/webitel",
+      "stackfile": "webitel-postgres-stack.yml"
+    }
   }
 ]

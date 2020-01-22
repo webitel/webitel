@@ -10,7 +10,7 @@ services:
       - CONSUL=$CONSUL
     networks:
       - wnet_macvlan_swarm
-      - wnet
+      - wtel_vlan
     extra_hosts:
       - rabbit:$AMQP
       - postgres:$PGSQL
@@ -27,7 +27,7 @@ services:
       - rabbit:$AMQP
       - postgres:$PGSQL
     networks:
-      - wnet
+      - wtel_vlan
   acr:
     image: webitel/acr:latest
     ports:
@@ -36,7 +36,7 @@ services:
       - rabbit:$AMQP
       - postgres:$PGSQL
     networks:
-      - wnet
+      - wtel_vlan
   sip-uac:
     image: webitel/webitel:latest
     command: ["uac", "--opensips-sip-address=dev.webitel.com", "--opensips-mi-address=http://opensips:8000/mi"]
@@ -46,7 +46,7 @@ services:
       - rabbit:$AMQP
       - postgres:$PGSQL
     networks:
-      - wnet
+      - wtel_vlan
   directory:
     image: webitel/webitel:latest
     command: ["dsa"]
@@ -58,7 +58,7 @@ services:
       - rabbit:$AMQP
       - postgres:$PGSQL
     networks:
-      - wnet
+      - wtel_vlan
   app:
     image: webitel/webitel:latest
     command: ["app"]
@@ -70,7 +70,7 @@ services:
       - rabbit:$AMQP
       - postgres:$PGSQL
     networks:
-      - wnet
+      - wtel_vlan
   httpapi:
     hostname: 'httpapi'
     image: webitel/webitel:latest
@@ -82,11 +82,11 @@ services:
     extra_hosts:
       - rabbit:$AMQP
     networks:
-      - wnet
+      - wtel_vlan
   httpapi-docs:
     image: webitel/swagger-api-docs
     networks:
-      - wnet
+      - wtel_vlan
     ports:
       - 8080:8080
     deploy:
@@ -110,15 +110,14 @@ services:
       - 80:80
       - 443:443
     networks:
-      - wnet
+      - wtel_vlan
     deploy:
       mode: global
 
 networks:
-  wnet:
-    driver: overlay
-    attachable: true
   wnet_macvlan_swarm:
+    external: true
+  wtel_vlan:
     external: true
 
 volumes:

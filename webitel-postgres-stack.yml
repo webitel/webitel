@@ -1,0 +1,22 @@
+version: '3.2'
+
+services:
+  postgres:
+    hostname: postgres
+    image: webitel/postgres:12
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    networks:
+      - wtel_vlan
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.role == manager]
+
+networks:
+  wtel_vlan:
+    external: true
+
+volumes:
+  postgres_data:
