@@ -41,5 +41,3 @@ networks:
 
 volumes:
   portainer_data:
-  postgres_data:
-  consul_data:
