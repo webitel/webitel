@@ -31,7 +31,7 @@ services:
       mode: global
       placement:
         constraints: [node.labels.rabbitmq2 == true]
-  haproxy:
+  rabbit:
     image: webitel/haproxy-for-rabbitmq
 #    ports:
 #      - 15672:15672
