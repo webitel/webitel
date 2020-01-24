@@ -1,0 +1,8 @@
+batch = true
+# Roots of the synchronization
+root = /var/lib/docker/volumes
+root = ssh://192.168.83.8//var/lib/docker/volumes
+# Paths to synchronize
+path = webitel_web_config
+path = webitel_run_data
+path = sql_postgres_data
