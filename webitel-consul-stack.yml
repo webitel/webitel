@@ -1,12 +1,11 @@
-version: '3.2'
+version: '3.7'
 
 services:
+
   consul:
     image: consul:latest
-    hostname: 'consul'
-#    ports:
-#      - 8500:8500
     networks:
+      wnet_macvlan_swarm:
       wtel_vlan:
         aliases:
           - consul.cluster
@@ -15,14 +14,15 @@ services:
       - "CONSUL_LOCAL_CONFIG={\"leave_on_terminate\": true, \"acl_default_policy\":\"allow\", \"acl_down_policy\":\"extend-cache\", \"server\":true }"
     command: ["agent", "-server", "-bootstrap", "-client=0.0.0.0", "-retry-join=consul.server", "-retry-join=consul.agent", "-datacenter=swarm", "-domain=wtel", "-ui"]
     volumes:
-      - cluster_data:/consul/data
+      - consul_data:/consul/data
     deploy:
       mode: replicated
       replicas: 1
+      placement:
+        constraints: [node.role == manager]
 
   server:
     image: consul:latest
-    hostname: 'server'
     networks:
       wtel_vlan:
         aliases:
@@ -39,7 +39,6 @@ services:
 
   agent:
     image: consul:latest
-    hostname: 'agent'
     networks:
       wtel_vlan:
         aliases:
@@ -57,8 +56,10 @@ services:
 networks:
   wtel_vlan:
     external: true
+  wnet_macvlan_swarm:
+    external: true
 
 volumes:
-  cluster_data:
+  consul_data:
   server_data:
   agent_data:

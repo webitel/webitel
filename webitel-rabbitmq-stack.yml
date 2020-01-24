@@ -1,6 +1,7 @@
-version: '3.2'
+version: '3.7'
 
 services:
+
   rabbitmq1:
     image: webitel/rabbitmq
     hostname: rabbitmq1
@@ -16,6 +17,7 @@ services:
       mode: global
       placement:
         constraints: [node.labels.rabbitmq1 == true]
+
   rabbitmq2:
     image: webitel/rabbitmq
     hostname: rabbitmq2
@@ -31,19 +33,19 @@ services:
       mode: global
       placement:
         constraints: [node.labels.rabbitmq2 == true]
+
   rabbit:
     image: webitel/haproxy-for-rabbitmq
-#    ports:
-#      - 15672:15672
-#      - 5672:5672
-#      - 1936:1936
     networks:
+      - wnet_macvlan_swarm
       - wtel_vlan
     deploy:
       mode: global
 
 networks:
   wtel_vlan:
+    external: true
+  wnet_macvlan_swarm:
     external: true
 
 volumes:
