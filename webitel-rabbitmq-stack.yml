@@ -39,7 +39,8 @@ services:
     networks:
       - wtel_vlan
     deploy:
-      mode: global
+      mode: replicated
+      replicas: 1
 
 networks:
   wtel_vlan:
