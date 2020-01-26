@@ -37,15 +37,12 @@ services:
   rabbit:
     image: webitel/haproxy-for-rabbitmq
     networks:
-      - wnet_macvlan_swarm
       - wtel_vlan
     deploy:
       mode: global
 
 networks:
   wtel_vlan:
-    external: true
-  wnet_macvlan_swarm:
     external: true
 
 volumes:

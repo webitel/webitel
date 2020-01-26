@@ -5,7 +5,6 @@ services:
   consul:
     image: consul:latest
     networks:
-      wnet_macvlan_swarm:
       wtel_vlan:
         aliases:
           - consul.cluster
@@ -55,8 +54,6 @@ services:
 
 networks:
   wtel_vlan:
-    external: true
-  wnet_macvlan_swarm:
     external: true
 
 volumes:
