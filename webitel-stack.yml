@@ -10,7 +10,7 @@ services:
       - wtel_vlan
       - wnet_macvlan_swarm
     environment:
-      - "PRIVATE_IPV4=${PRIVATE_IPV4:-$(ip addr show eth1 | grep 'inet ' | awk '{print $2}' | cut -d/ -f1)}"
+      - "PRIVATE_IPV4=$(ip addr show eth1 | grep 'inet ' | awk '{print $2}' | cut -d/ -f1)"
     deploy:
       mode: replicated
       replicas: 1
