@@ -14,6 +14,16 @@
         "name": "SIPHOST",
         "label": "SIP HOST",
         "description": "IP or Hostname for SIP Binding"
+      },
+      {
+        "name": "WEBDOMAIN",
+        "label": "Web URL domain",
+        "description": "FQDN url host"
+      },
+      {
+        "name": "WEBSUBDOMAINS",
+        "label": "Web URL subdomains",
+        "description": "Subdomains list"
       }
     ]
   },

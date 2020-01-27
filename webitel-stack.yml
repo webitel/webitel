@@ -2,32 +2,44 @@
 version: '3.7'
 
 services:
-  opensips:
-    hostname: 'opensips'
-    image: webitel/opensips:3.0
-    command: ["/opensips/sbin/opensips", "-DD"]
-    environment:
-      - CONSUL=consul
+
+  freeswitch1:
+    hostname: freeswitch1
+    image: webitel/freeswitch:1.10
     networks:
-      - wnet_macvlan_swarm
       - wtel_vlan
-    volumes:
-      - web_config:/config
+      - wnet_macvlan_swarm
+    environment:
+      - "PRIVATE_IPV4={{ GetInterfaceIP \"eth1\" }}"
     deploy:
-      mode: global
-      placement:
-        constraints: [node.role == manager]
+      mode: replicated
+      replicas: 1
+
+  opensips:
+    hostname: opensips
+    image: webitel/opensips:3.0
+    ports:
+      - 5060:5060
+      - 5060:5060/udp
+    networks:
+      - wtel_vlan
+    deploy:
+      mode: replicated
+      replicas: 1
+
   engine:
     image: webitel/engine:latest
     command: ["-consul", "consul:8500"]
     networks:
       - wtel_vlan
+
   acr:
     image: webitel/acr:latest
-    ports:
-      - 10030:10030
+    environment:
+      - "application:clusterHost=consul:8500"
     networks:
       - wtel_vlan
+
   sip-uac:
     image: webitel/webitel:latest
     command: ["uac", "--opensips-sip-address=$SIPHOST", "--opensips-mi-address=http://opensips:8000/mi"]
@@ -35,6 +47,7 @@ services:
       - MICRO_REGISTRY_ADDRESS=consul
     networks:
       - wtel_vlan
+
   directory:
     image: webitel/webitel:latest
     command: ["dsa"]
@@ -44,6 +57,7 @@ services:
       - run_data:/usr/local/webitel/run
     networks:
       - wtel_vlan
+
   app:
     image: webitel/webitel:latest
     command: ["app"]
@@ -53,6 +67,7 @@ services:
       - run_data:/usr/local/webitel/run
     networks:
       - wtel_vlan
+
   httpapi:
     hostname: 'httpapi'
     image: webitel/webitel:latest
@@ -63,25 +78,22 @@ services:
       - run_data:/usr/local/webitel/run
     networks:
       - wtel_vlan
+
   httpapi-docs:
     image: webitel/swagger-api-docs
     networks:
       - wtel_vlan
     ports:
       - 8080:8080
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
+
   frontend:
     image: webitel/web:latest
     environment:
       - PUID=1000
       - PGID=1000
-      - TZ=Europe/Kiev
-      - URL=webitel.com
-      - SUBDOMAINS=dev
+      - TZ=UTC
+      - URL=$WEBDOMAIN
+      - SUBDOMAINS=$WEBSUBDOMAINS
       - VALIDATION=http
       - ONLY_SUBDOMAINS=true
     volumes:
@@ -91,8 +103,6 @@ services:
       - 443:443
     networks:
       - wtel_vlan
-    deploy:
-      mode: global
 
 networks:
   wnet_macvlan_swarm:
