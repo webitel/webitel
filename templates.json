@@ -12,17 +12,17 @@
     "env": [
       {
         "name": "SIPHOST",
-        "label": "SIP HOST",
+        "label": "SIP binding host",
         "description": "IP or Hostname for SIP Binding"
       },
       {
         "name": "WEBDOMAIN",
-        "label": "Web URL domain",
+        "label": "URL domain",
         "description": "FQDN url host"
       },
       {
         "name": "WEBSUBDOMAINS",
-        "label": "Web URL subdomains",
+        "label": "URL subdomains",
         "description": "Subdomains list"
       }
     ]
