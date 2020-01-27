@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
 
-  cluster:
+  consul:
     image: consul:latest
     networks:
       wtel_vlan:
@@ -46,14 +46,6 @@ services:
     command: ["agent", "-client=0.0.0.0", "-retry-join=consul.server", "-retry-join=consul.cluster",  "-datacenter=swarm", "-domain=wtel"]
     volumes:
       - agent_data:/consul/data
-    deploy:
-      mode: replicated
-      replicas: 1
-
-  consul:
-    image: webitel/haproxy-for-consul
-    networks:
-      - wtel_vlan
     deploy:
       mode: replicated
       replicas: 1
