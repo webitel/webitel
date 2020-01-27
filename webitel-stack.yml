@@ -7,8 +7,8 @@ services:
     hostname: freeswitch1
     image: webitel/freeswitch:1.10
     networks:
-      - wtel_vlan
       - wnet_macvlan_swarm
+      - wtel_vlan
     deploy:
       mode: replicated
       replicas: 1
@@ -20,6 +20,7 @@ services:
       - 5060:5060
       - 5060:5060/udp
     networks:
+      - wnet_macvlan_swarm
       - wtel_vlan
     deploy:
       mode: replicated
