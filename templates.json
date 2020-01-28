@@ -73,7 +73,7 @@
     "env": [
       {
         "name": "ODFEHOSTS",
-        "label": "docker swarm nodes name list",
+        "label": "Nodes name list",
         "description": "The list of the nodes separated by comma"
       }
     ]
