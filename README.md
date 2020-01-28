@@ -12,13 +12,18 @@
 
 ## consul
 
-    docker stack deploy --compose-file webitel-consul-stack.yml swarm
+    docker stack deploy --compose-file webitel-consul-stack.yml consul
+
+## PostgreSQL
+
+    docker node update --label-add database=true node-1
+    docker stack deploy --compose-file webitel-postgres-stack.yml sql
 
 ## rabbitmq
 
     docker node update --label-add rabbitmq1=true node-1
     docker node update --label-add rabbitmq2=true node-2
-    docker stack deploy --compose-file webitel-rabbitmq-stack.yml swarm
+    docker stack deploy --compose-file webitel-rabbitmq-stack.yml amq
 
 HA: https://www.rabbitmq.com/ha.html
 
@@ -28,3 +33,4 @@ HA: https://www.rabbitmq.com/ha.html
     sysctl -p
     docker node update --label-add elastic=true node-1
     docker node update --label-add elastic=true node-2
+    docker stack deploy --compose-file webitel-opendistro-stack.yml esk

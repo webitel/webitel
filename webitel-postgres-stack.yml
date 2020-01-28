@@ -9,10 +9,9 @@ services:
     networks:
       - wtel_vlan
     deploy:
-      mode: replicated
-      replicas: 1
+      mode: global
       placement:
-        constraints: [node.role == manager]
+        constraints: [node.labels.database == true]
 
 networks:
   wtel_vlan:
