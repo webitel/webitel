@@ -26,3 +26,5 @@ HA: https://www.rabbitmq.com/ha.html
 
     echo vm.max_map_count=262144 >> /etc/sysctl.conf
     sysctl -p
+    docker node update --label-add elastic=true node-1
+    docker node update --label-add elastic=true node-2

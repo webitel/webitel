@@ -17,6 +17,8 @@ services:
       - wtel_vlan
     deploy:
       mode: global
+      placement:
+        constraints: [node.labels.elastic == true]
       endpoint_mode: dnsrr
       resources:
         limits:
