@@ -1,5 +1,11 @@
 # Webitel Stack
 
+## docker daemon
+
+    echo -e "[Service]\nLimitMEMLOCK=infinity" | SYSTEMD_EDITOR=tee systemctl edit docker.service
+    systemctl daemon-reload
+    systemctl restart docker
+
 ## portainer
 
     docker stack deploy --compose-file webitel-portainer-stack.yml swarm
