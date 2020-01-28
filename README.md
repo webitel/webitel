@@ -1,8 +1,8 @@
 # Webitel Stack
 
-## docker daemon
+## docker swarm
 
-On each node:
+Install docker swarm. On each node execute:
 
     echo -e "[Service]\nLimitMEMLOCK=infinity" | SYSTEMD_EDITOR=tee systemctl edit docker.service
     systemctl daemon-reload
