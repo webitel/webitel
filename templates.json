@@ -69,6 +69,13 @@
     "repository": {
       "url": "https://github.com/webitel/webitel",
       "stackfile": "webitel-opendistro-stack.yml"
-    }
+    },
+    "env": [
+      {
+        "name": "ODFEHOSTS",
+        "label": "docker swarm nodes name list",
+        "description": "The list of the nodes separated by comma"
+      }
+    ]
   }
 ]

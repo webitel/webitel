@@ -1,65 +1,37 @@
 version: '3.7'
 
 services:
-  odfe-node1:
+  elastic:
     image: amazon/opendistro-for-elasticsearch:1.3.0
-    container_name: odfe-node1
+    hostname: "{{.Node.Hostname}}"
     environment:
-      - cluster.name=webitel-odfe-cluster
-      - node.name=odfe-node1
-      - discovery.seed_hosts=odfe-node1,odfe-node2
-      - cluster.initial_master_nodes=odfe-node1,odfe-node2
+      - cluster.name=odfe-cluster
+      - node.name={{.Node.Hostname}}
+      - discovery.seed_hosts=elastic
+      - cluster.initial_master_nodes=$ODFEHOSTS
       - bootstrap.memory_lock=false
       - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     volumes:
-      - odfe-data1:/usr/share/elasticsearch/data
-#    ports:
-#      - 9200:9200
-#      - 9600:9600
+      - odfe-data:/usr/share/elasticsearch/data
     networks:
       - wtel_vlan
     deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints: [node.role == manager]
+      mode: global
+      endpoint_mode: dnsrr
       resources:
         limits:
-          memory: 1000M
-
-  odfe-node2:
-    image: amazon/opendistro-for-elasticsearch:1.3.0
-    container_name: odfe-node2
-    environment:
-      - cluster.name=webitel-odfe-cluster
-      - node.name=odfe-node2
-      - discovery.seed_hosts=odfe-node1,odfe-node2
-      - cluster.initial_master_nodes=odfe-node1,odfe-node2
-      - bootstrap.memory_lock=false
-      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
-    volumes:
-      - odfe-data2:/usr/share/elasticsearch/data
-    networks:
-      - wtel_vlan
-    deploy:
-      mode: replicated
-      replicas: 1
-      placement:
-        constraints: [node.role == worker]
-      resources:
-        limits:
-          memory: 1000M
+          memory: 1024M
 
   kibana:
     image: amazon/opendistro-for-elasticsearch-kibana:1.3.0
-    container_name: odfe-kibana
+    hostname: odfe-kibana
     ports:
       - 5601:5601
     expose:
       - "5601"
     environment:
-      ELASTICSEARCH_URL: https://odfe-node1:9200
-      ELASTICSEARCH_HOSTS: https://odfe-node1:9200
+      ELASTICSEARCH_URL: https://elastic:9200
+      ELASTICSEARCH_HOSTS: https://elastic:9200
     networks:
       - wtel_vlan
     deploy:
@@ -67,8 +39,7 @@ services:
       replicas: 1
 
 volumes:
-  odfe-data1:
-  odfe-data2:
+  odfe-data:
 
 networks:
   wtel_vlan:
