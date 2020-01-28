@@ -16,3 +16,7 @@
 
 HA: https://www.rabbitmq.com/ha.html
 
+## Open Distro for Elasticsearch
+
+    echo vm.max_map_count=262144 >> /etc/sysctl.conf
+    sysctl -p

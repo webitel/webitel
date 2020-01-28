@@ -59,5 +59,16 @@
       "url": "https://github.com/webitel/webitel",
       "stackfile": "webitel-postgres-stack.yml"
     }
+  },
+  {
+    "type": 2,
+    "title": "Open Distro",
+    "description": "Open Distro for elasticsearch docker swarm stack",
+    "platform": "linux",
+    "logo": "https://avatars2.githubusercontent.com/u/47460393",
+    "repository": {
+      "url": "https://github.com/webitel/webitel",
+      "stackfile": "webitel-opendistro-stack.yml"
+    }
   }
 ]
