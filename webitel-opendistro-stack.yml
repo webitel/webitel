@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   elastic:
-    image: amazon/opendistro-for-elasticsearch:1.3.0
+    image: amazon/opendistro-for-elasticsearch:1.4.0
     hostname: "{{.Node.Hostname}}"
     environment:
       - cluster.name=odfe-cluster
