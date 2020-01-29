@@ -62,7 +62,7 @@
   },
   {
     "type": 2,
-    "title": "Open Distro",
+    "title": "Open Distro for Elasticsearch: Elastic",
     "description": "Open Distro for elasticsearch docker swarm stack",
     "platform": "linux",
     "logo": "https://avatars2.githubusercontent.com/u/47460393",
@@ -77,5 +77,16 @@
         "description": "The list of the nodes separated by comma"
       }
     ]
+  },
+  {
+    "type": 2,
+    "title": "Open Distro for Elasticsearch: Kibana",
+    "description": "Open Distro for elasticsearch Kibana docker swarm stack",
+    "platform": "linux",
+    "logo": "https://avatars2.githubusercontent.com/u/47460393",
+    "repository": {
+      "url": "https://github.com/webitel/webitel",
+      "stackfile": "webitel-kibana-stack.yml"
+    }
   }
 ]
