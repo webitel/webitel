@@ -26,12 +26,6 @@ services:
       mode: replicated
       replicas: 1
 
-  storage:
-    image: webitel/storage:latest
-    command: ["-consul", "consul:8500"]
-    networks:
-      - wtel_vlan
-
   engine:
     image: webitel/engine:latest
     command: ["-consul", "consul:8500"]
@@ -42,6 +36,14 @@ services:
     image: webitel/acr:latest
     environment:
       - "application:clusterHost=consul:8500"
+    networks:
+      - wtel_vlan
+
+  storage:
+    image: webitel/storage:latest
+    command: ["-consul", "consul:8500"]
+    volumes:
+      - storage_data:/data
     networks:
       - wtel_vlan
 
@@ -118,3 +120,4 @@ networks:
 volumes:
   run_data:
   web_config:
+  storage_data:
