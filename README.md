@@ -39,6 +39,11 @@ On the manager node:
 
 HA: https://www.rabbitmq.com/ha.html
 
+## FreeSWITCH
+
+    docker node update --label-add freeswitch=true node-2
+    docker stack deploy --compose-file webitel-freeswitch-stack.yml amq
+
 ## Open Distro for Elasticsearch
 
     docker node update --label-add elastic=true node-1

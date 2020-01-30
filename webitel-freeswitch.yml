@@ -1,0 +1,23 @@
+---
+version: '3.7'
+
+services:
+
+  freeswitch1:
+    hostname: freeswitch1
+    image: webitel/freeswitch:1.10
+    networks:
+      - wnet_macvlan_swarm
+      - wtel_vlan
+    deploy:
+      mode: replicated
+      replicas: 1
+      placement:
+        constraints: [node.labels.freeswitch == true]
+
+
+networks:
+  wnet_macvlan_swarm:
+    external: true
+  wtel_vlan:
+    external: true

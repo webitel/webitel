@@ -3,16 +3,6 @@ version: '3.7'
 
 services:
 
-  freeswitch1:
-    hostname: freeswitch1
-    image: webitel/freeswitch:1.10
-    networks:
-      - wnet_macvlan_swarm
-      - wtel_vlan
-    deploy:
-      mode: replicated
-      replicas: 1
-
   opensips:
     hostname: opensips
     image: webitel/opensips:3.0

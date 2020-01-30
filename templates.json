@@ -62,6 +62,17 @@
   },
   {
     "type": 2,
+    "title": "FreeSWITCH",
+    "description": "FreeSWITCH docker swarm stack",
+    "platform": "linux",
+    "logo": "https://freeswitch.org/confluence/download/attachments/1048578/FREESWITCH",
+    "repository": {
+      "url": "https://github.com/webitel/webitel",
+      "stackfile": "webitel-freeswitch-stack.yml"
+    }
+  },
+  {
+    "type": 2,
     "title": "Open Distro for Elasticsearch: Elastic",
     "description": "Open Distro for elasticsearch docker swarm stack",
     "platform": "linux",
