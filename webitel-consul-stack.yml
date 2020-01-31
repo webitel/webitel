@@ -4,55 +4,54 @@ services:
 
   consul:
     image: consul:latest
+    hostname: consul
     networks:
-      wtel_vlan:
-        aliases:
-          - consul.cluster
+      - wtel_vlan
     environment:
       - CONSUL_BIND_INTERFACE=eth0
-      - "CONSUL_LOCAL_CONFIG={\"leave_on_terminate\": true, \"acl_default_policy\":\"allow\", \"acl_down_policy\":\"extend-cache\", \"server\":true }"
-    command: ["agent", "-server", "-bootstrap", "-client=0.0.0.0", "-retry-join=consul.server", "-retry-join=consul.agent", "-datacenter=swarm", "-domain=wtel", "-ui"]
+      - "CONSUL_LOCAL_CONFIG={\"leave_on_terminate\": true, \"acl_default_policy\":\"allow\", \"acl_down_policy\":\"extend-cache\", \"server\":true, \"retry_join\":[\"consul\",\"server\",\"agent\"] }"
+    command: ["agent", "-server", "-bootstrap", "-bootstrap-expect=1", "-client=0.0.0.0", "-datacenter=swarm", "-domain=wtel", "-ui"]
     volumes:
       - consul_data:/consul/data
+#    ports:
+#      - 8500:8500
     deploy:
       mode: replicated
       replicas: 1
-      placement:
-        constraints: [node.role == manager]
 
   server:
     image: consul:latest
+    hostname: server
     networks:
-      wtel_vlan:
-        aliases:
-          - consul.server
+      - wtel_vlan
     environment:
       - CONSUL_BIND_INTERFACE=eth0
-      - "CONSUL_LOCAL_CONFIG={\"leave_on_terminate\": true, \"acl_default_policy\":\"allow\", \"acl_down_policy\":\"extend-cache\", \"server\":true }"
-    command: ["agent", "-client=0.0.0.0", "-retry-join=consul.cluster", "-retry-join=consul.agent",  "-datacenter=swarm", "-domain=wtel"]
+      - "CONSUL_LOCAL_CONFIG={\"leave_on_terminate\": true, \"acl_default_policy\":\"allow\", \"acl_down_policy\":\"extend-cache\", \"server\":true, \"retry_join\":[\"consul\",\"server\",\"agent\"] }"
+    command: ["agent", "-client=0.0.0.0", "-datacenter=swarm", "-domain=wtel"]
     volumes:
       - server_data:/consul/data
     deploy:
       mode: replicated
       replicas: 1
       placement:
-        constraints: [node.role == worker]
+        constraints: [node.role == manager]
 
   agent:
     image: consul:latest
+    hostname: agent
     networks:
-      wtel_vlan:
-        aliases:
-          - consul.agent
+      - wtel_vlan
     environment:
       - CONSUL_BIND_INTERFACE=eth0
-      - "CONSUL_LOCAL_CONFIG={\"leave_on_terminate\": true, \"acl_default_policy\":\"allow\", \"acl_down_policy\":\"extend-cache\", \"server\":true }"
-    command: ["agent", "-client=0.0.0.0", "-retry-join=consul.server", "-retry-join=consul.cluster",  "-datacenter=swarm", "-domain=wtel"]
+      - "CONSUL_LOCAL_CONFIG={\"leave_on_terminate\": true, \"acl_default_policy\":\"allow\", \"acl_down_policy\":\"extend-cache\", \"server\":true, \"retry_join\":[\"consul\",\"server\",\"agent\"] }"
+    command: ["agent", "-client=0.0.0.0", "-datacenter=swarm", "-domain=wtel"]
     volumes:
       - agent_data:/consul/data
     deploy:
       mode: replicated
       replicas: 1
+      placement:
+        constraints: [node.role == worker]
 
 networks:
   wtel_vlan:
