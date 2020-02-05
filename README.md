@@ -39,6 +39,8 @@ On the manager node:
 
 HA: https://www.rabbitmq.com/ha.html
 
+    ^TAP|ACR|freeswitch|opensips|webitel|call|cdr|cc|go
+
 ## FreeSWITCH
 
     docker node update --label-add freeswitch=true node-2
